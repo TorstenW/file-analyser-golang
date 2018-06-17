@@ -1,0 +1,1 @@
+Fileanalyser, same as [this](https://github.com/TorstenW/file-analyser-webservice) but in go.
