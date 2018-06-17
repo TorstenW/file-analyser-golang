@@ -147,7 +147,7 @@ func sortMapGetResult(mp *map[string]int, getFirst bool) string {
 	} else {
 		sort.Sort(sort.Reverse(pl))
 	}
-	if len(pl) > 1 && pl[0] == pl[1] {
+	if len(pl) > 1 && pl[0].Value == pl[1].Value {
 		return "null"
 	}
 	return pl[0].Key
