@@ -65,12 +65,11 @@ func handleEvaluation(w http.ResponseWriter, r *http.Request) {
 	finalResult := <-analysisResult
 
 	log.Printf("%+v\n", finalResult)
-	log.Printf("%+v\n", finalResult.Errors)
 	log.Printf("Time: %s\n", time.Since(start))
 
 	jsonResult, err := json.Marshal(finalResult)
 	if err != nil {
-		log.Fatalf("JSON marshaling failed: %s", err)
+		log.Printf("JSON marshaling failed: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -127,19 +126,19 @@ func analyseLines(lines <-chan lineResult, result chan<- analysisResult) {
 			speechesSecurity[speaker]++
 		}
 	}
-	res.MostSpeeches = sortMapGetResult(&speeches2013, true)
-	res.MostSecurity = sortMapGetResult(&speechesSecurity, true)
-	res.LeastWordy = sortMapGetResult(&speechesWords, false)
+	res.MostSpeeches = sortMapGetResult(speeches2013, true)
+	res.MostSecurity = sortMapGetResult(speechesSecurity, true)
+	res.LeastWordy = sortMapGetResult(speechesWords, false)
 
 	result <- res
 }
 
-func sortMapGetResult(mp *map[string]int, getFirst bool) string {
-	if len(*mp) == 0 {
+func sortMapGetResult(mp map[string]int, getFirst bool) string {
+	if len(mp) == 0 {
 		return "null"
 	}
 	pl := make(PairList, 0)
-	for k, v := range *mp {
+	for k, v := range mp {
 		pl = append(pl, Pair{k, v})
 	}
 	if getFirst {
